@@ -32,14 +32,29 @@
          ]
      };
          
+          var albumBig = {
+     title: 'Life After Death',
+     artist: 'The Notorious B.I.G.',
+     label: 'Bad Boy Entertainment',
+     year: '1994',
+     albumArtUrl: 'http://www.egotripland.com/wp-content/uploads/2012/03/Notorious_BIG-Life_After_Death1-e1331104684115.jpg',
+     songs: [
+         { title: 'Hypnotize', duration: '4:01', audioUrl: '/assets/music/Hypnotize' },
+         { title: 'Fuck You Tonight', duration: '5:24', audioUrl: '/assets/music/FuckYouTonight' },
+         { title: 'I Love The Dough', duration: '3:45', audioUrl: '/assets/music/ILoveTheDough' },
+         { title: 'I Got A Story To Tell', duration: '3:18', audioUrl: '/assets/music/IGotAStoryToTell'  },
+         { title: 'Kick In The Door', duration: '3:15', audioUrl: '/assets/music/KickInTheDoor' }
+     ]
+ };
+         
          Fixtures.getAlbum = function() {
-         return albumPicasso;
+         return albumBig;
          };
          
          Fixtures.getCollection = function(numberOfAlbums) {
          var totalCollection = [];
          for(var i = 0; i < numberOfAlbums; i++){
-             totalCollection.push(albumPicasso);
+             totalCollection.push(albumBig);
          }
          return totalCollection;
          };

@@ -4,17 +4,12 @@
          
          this.albumData = angular.copy(albumBig);
          
-         this.song_list = [
-         { title: 'Hypnotize', duration: '4:01' },
-         { title: 'Fuck You Tonight', duration: '5:24' },
-         { title: 'I Love The Dough', duration: '3:45'},
-         { title: 'I Got A Story To Tell', duration: '3:18' },
-         { title: 'Kick In The Door', duration: '3:15'}
-     ]
-         
+         this.song_list = [];
+         for (var i = 0; i < 5; i++){
+            this.song_list.push(this.albumData.songs[i]);
+         }
      }
      angular
          .module('blocJams')
          .controller('AlbumCtrl', AlbumCtrl);
  })();
-

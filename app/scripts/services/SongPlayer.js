@@ -113,18 +113,23 @@
       SongPlayer.next = function() {
          var currentSongIndex = getSongIndex(SongPlayer.currentSong);
          currentSongIndex++;
+                   
+         alert(currentAlbum.songs[currentSongIndex]);
+         
            
          if (currentSongIndex > 4) {
-            stopSong(song);
+             stopSong(song);
          } else {
              var song = currentAlbum.songs[currentSongIndex];
              setSong(song);
              playSong(song);
          }
       };
-         
+
           return SongPlayer;
      }
+    
+
  
      angular
          .module('blocJams')

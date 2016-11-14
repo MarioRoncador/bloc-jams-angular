@@ -14,13 +14,13 @@
                         ng-click="playerBar.songPlayer.pause()">
                   </span>
              </a>
-             <a class="next" g-click="playerBar.songPlayer.next()">
+             <a class="next" ng-click="playerBar.songPlayer.next()">
                  <span class="ion-skip-forward"></span>
              </a>
          </div>
-         <div class="control-group currently-playing">
-             <h2 class="song-name">{{ song.title }}</h2>
-             <h2 class="artist-song-mobile">{{ album.albumData.artist }}</h2>
+         <div class="control-group currently-playing" >
+             <h2 class="song-name">{{  }} title</h2>
+             <h2 class="artist-song-mobile">{{  }} title</h2>
              <h3 class="artist-name">{{ album.albumData.artist }}</h3>
              <div class="seek-control">
                  <div class="seek-bar">
@@ -28,7 +28,7 @@
                      <div class="thumb"></div>
                  </div>
                  <div class="current-time">{{ TBD }}</div>
-                 <div class="total-time">{{ song.duration }}</div>
+                 <div class="total-time">{{  }} duration</div>
              </div>
          </div>
          <div class="control-group volume">

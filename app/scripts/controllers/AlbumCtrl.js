@@ -19,4 +19,8 @@
      angular
          .module('blocJams')
          .controller('AlbumCtrl', ['Fixtures', 'SongPlayer', AlbumCtrl]);
+<<<<<<< HEAD
  })();
+=======
+ })();
+>>>>>>> AngularCP8

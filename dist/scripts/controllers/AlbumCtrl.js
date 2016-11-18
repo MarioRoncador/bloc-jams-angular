@@ -1,16 +1,12 @@
  (function() {
-
      function AlbumCtrl(Fixtures, SongPlayer) {
          this.albumData = Fixtures.getAlbum();
          this.songPlayer = SongPlayer;
 
-         this.albumData = angular.copy(albumBig);
-         
          this.song_list = [];
          for (var i = 0; i < 5; i++){
             this.song_list.push(this.albumData.songs[i]);
          }
-
      }
      
      angular

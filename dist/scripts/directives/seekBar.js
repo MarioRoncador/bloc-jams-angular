@@ -29,12 +29,12 @@
              };
  
              scope.fillStyle = function() {
-                 return {position: percentString()};
+                 return {width: percentString()};
              };
              
-        /*     scope.thumbStyle = function() {
-                 return {width: percentString()};
-             }; */
+             scope.thumbStyle = function() {
+                 return {left: percentString()};
+             }; 
              
              scope.onClickSeekBar = function(event) {
                 var percent = calculatePercent(seekBar, event);

@@ -2,6 +2,7 @@
      function SongPlayer($rootScope, Fixtures) {
           var SongPlayer = {};
          
+          
           /**
           * @desc store the info about the album in currentAlbum
           * @type {Object}
@@ -44,6 +45,12 @@
                 });
             });
               
+            var songIndex = parseInt(song.$$hashKey.slice(-1));  
+            
+            console.log(songIndex);
+        
+           
+
             SongPlayer.currentSong = song;
           };
          
@@ -206,6 +213,11 @@
         playSong(song);
       }
 
+    };
+         
+    SongPlayer.mute = function(song) {
+      song = song || SongPlayer.currentSong;
+      currentBuzzObject.toggleMute(); // Mute-unmute song
     };
 
 

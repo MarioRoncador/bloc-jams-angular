@@ -29,10 +29,18 @@
                formats: ['mp3'],
                preload: true
             });
+              
+            currentBuzzObject.setVolume(50);
  
             currentBuzzObject.bind('timeupdate', function() {
                 $rootScope.$apply(function() {
-                    SongPlayer.currentTime = currentBuzzObject.getTime();
+                    SongPlayer.currentTime = buzz.toTimer(currentBuzzObject.getTime());
+                });
+            });
+              
+            currentBuzzObject.bind('volumechange', function() {
+                $rootScope.$apply(function() {
+                    SongPlayer.volume = currentBuzzObject.getVolume();
                 });
             });
               
@@ -48,7 +56,21 @@
           var playSong = function(song){
               currentBuzzObject.play();
               song.playing = true;
+              SongPlayer.currentAlbum = currentAlbum;
           };
+         
+          /**
+          * @function stopSong
+          * @desc Stops the current buzz object & sets the playing song to the first of the list
+          * @param the currently playing song
+          */  
+           var stopSong = function(song) {
+               currentBuzzObject.pause();
+               currentBuzzObject.setTime(null);
+               song.playing = false;
+               SongPlayer.currentAlbum = null;
+               SongPlayer.currentSong = null;
+           };
          
           /**
           * @function getSongIndex
@@ -59,15 +81,7 @@
               return currentAlbum.songs.indexOf(song);
           }; 
          
-          /**
-          * @function stopSong
-          * @desc Stops the current buzz object & sets the playing song to the first of the list
-          * @param the currently playing song
-          */  
-          var stopSong = function(song) {
-              currentBuzzObject.stop();
-              song.playing = null;
-          }; 
+          
          
          /**
          * @desc Active song object from list of songs
@@ -78,8 +92,21 @@
          /**
          * @desc Current playback time (in seconds) of currently playing song
          * @type {Number}
-         */
+         */       
       SongPlayer.currentTime = null;
+         
+         /**
+         * @desc Current album variable (public)
+         * @type {Object}
+         */
+      SongPlayer.currentAlbum = null;
+         
+
+         /**
+         * @desc The volume of the song player
+         * @type {Number}
+         */
+      SongPlayer.volume = null;
          
       SongPlayer.play = function(song) {
          song = song || SongPlayer.currentSong;
@@ -89,72 +116,103 @@
         } else if (SongPlayer.currentSong === song) {
              if (currentBuzzObject.isPaused()) {
                currentBuzzObject.play();
+               song.playing = true;
              }
           }
       };
          
-      SongPlayer.pause = function(song) {
-         song = song || SongPlayer.currentSong;
-         currentBuzzObject.pause();
-         song.playing = false;
-      };   
-      
-      /**
-      * @function SongPlayer.previous
-      * @desc getSong index and decrease the index by one. if the index is < 0 stop the song and set as currently playing song the first song.
-      * @param none
-      */  
-      SongPlayer.previous = function() {
-         var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-         currentSongIndex--;
-           
-         if (currentSongIndex < 0) {
-            stopSong(song);
-         } else {
-             var song = currentAlbum.songs[currentSongIndex];
-             setSong(song);
-             playSong(song);
-         }
-      };
-    
-      /**
-      * @function SongPlayer.next
-      * @desc getSong index and increase the index by one. If the index is > 4 stop the song and set as currently playing song the first song.
-      * @param none
-      */    
-      SongPlayer.next = function() {
-         var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-         currentSongIndex++;
-                   
-         alert(currentAlbum.songs[currentSongIndex]);
          
-           
-         if (currentSongIndex > 4) {
-             stopSong(song);
-         } else {
-             var song = currentAlbum.songs[currentSongIndex];
-             setSong(song);
-             playSong(song);
-         }
-      };
+     /**
+     * @function setCurrentTime
+     * @desc Set current time (in seconds) of currently playing song
+     * @param {Number} time
+     */
+    SongPlayer.setCurrentTime = function(time) {
+      if (currentBuzzObject) {
+        currentBuzzObject.setTime(time);
+      }
+    };
+
+     /**
+     * @function setVolume
+     * @desc Set volume of the song player
+     * @param {Number} volume
+     */
+    SongPlayer.setVolume = function(volume) {
+      if (currentBuzzObject) {
+        currentBuzzObject.setVolume(volume)
+      }
+    };
          
-      /**
-      * @function setCurrentTime
-      * @desc Set current time (in seconds) of currently playing song
-      * @param {Number} time
-      */
-      SongPlayer.setCurrentTime = function(time) {
-          if (currentBuzzObject) {
-            currentBuzzObject.setTime(time);
-          }
-      };
-
-          return SongPlayer;
-     }
+     /**
+    * @function SongPlayer.pause (public method of the SongPlayer service)
+    * @desc Uses the private setSong and playSong methods to pause currently playing music
+    * @param {Object} song
+    */
+    SongPlayer.pause = function(song) {
+      song = song || SongPlayer.currentSong;
+      currentBuzzObject.pause(); // Pauses song, doesn't stop it
+      song.playing = false;
+    }; 
     
+    /**
+    * @function SongPlayer.playOrPause (public method of the SongPlayer service)
+    * @desc Will either play or pause depending on whether the song is playing (helps with buttons)
+    * @param {Object} song
+    */
+    SongPlayer.playOrPause = function(song) {
+       
+       if (song.playing){
+         SongPlayer.pause(song);
+       }
+       else{
+         SongPlayer.play(song);
+       }
+    };
 
+    /**
+    * @function SongPlayer.previous (public method of the SongPlayer service)
+    * @desc Get array index of the song preceding the currentSong
+    */
+    SongPlayer.previous = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex--;
+
+      if (currentSongIndex < 0) {
+        stopSong(SongPlayer.currentSong);
+      } 
+      else {
+        var song = currentAlbum.songs[currentSongIndex];
+        setSong(song);
+        playSong(song);
+      }
+
+    };
+
+    /**
+    * @function SongPlayer.next (public method of the SongPlayer service)
+    * @desc Get array index of the song following the currentSong
+    */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++;
+
+      if (currentSongIndex >= currentAlbum.songs.length) {
+        stopSong(SongPlayer.currentSong);
+      } 
+      else {
+        var song = currentAlbum.songs[currentSongIndex];
+        setSong(song);
+        playSong(song);
+      }
+
+    };
+
+
+    return SongPlayer;
+  }
  
-     angular
-         .module('blocJams')
-         .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
- })();
+    angular
+      .module('blocJams')
+      .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
+})();

@@ -122,16 +122,7 @@
     };
 
 
-    /**
-    * @function setCurrentTime
-    * @desc Set current time (in seconds) of currently playing song
-    * @param {Number} time
-    */
-    SongPlayer.setCurrentTime = function(time) {
-      if (currentBuzzObject) {
-        currentBuzzObject.setTime(time);
-      }
-    };
+
 
     /**
     * @function setVolume
@@ -208,9 +199,19 @@
 
     };
 
+    /**
+    * @function setCurrentTime
+    * @desc Set current time (in seconds) of currently playing song
+    * @param {Number} time
+    */
+    SongPlayer.setCurrentTime = function(time) {
+      if (currentBuzzObject) {
+        currentBuzzObject.setTime(time);
+      }
+    };
 
     return SongPlayer;
-  };
+  }
 
   angular
   .module('blocJams')
